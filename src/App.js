@@ -5,6 +5,9 @@ import Footer from './components/Footer';
 import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
+import Checkout from './components/Checkout';
+import OrderConfirmation from './components/OrderConfirmation';
+import Admin from './components/Admin';
 import products from './data/products';
 
 function App() {
@@ -78,6 +81,23 @@ function App() {
                   clearCart={clearCart} 
                 />
               } 
+            />
+            <Route 
+              path="/checkout" 
+              element={
+                <Checkout 
+                  cart={cart} 
+                  clearCart={clearCart} 
+                />
+              } 
+            />
+            <Route 
+              path="/order-confirmation" 
+              element={<OrderConfirmation />} 
+            />
+            <Route 
+              path="/admin" 
+              element={<Admin />} 
             />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

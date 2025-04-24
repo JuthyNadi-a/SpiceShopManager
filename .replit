@@ -32,3 +32,11 @@ waitForPort = 5000
 
 [deployment]
 run = ["sh", "-c", "npx create-react-app . --use-npm && npm install react-router-dom && npm start"]
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[[ports]]
+localPort = 5000
+externalPort = 5000
