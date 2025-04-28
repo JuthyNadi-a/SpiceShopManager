@@ -20,17 +20,20 @@ An e-commerce application for selling premium spices, built with React.
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/your-username/spice-shop.git
 cd spice-shop
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. Start the development server
+
 ```bash
 npm start
 ```
@@ -50,13 +53,23 @@ This creates an optimized production build in the `build` folder.
 A Dockerfile is included to containerize the application:
 
 1. Build the Docker image
+
 ```bash
 docker build -t spice-shop .
 ```
 
 2. Run the container
+
 ```bash
 docker run -p 80:80 spice-shop
+```
+
+```
+served it with a static server:
+
+npm install -g serve
+serve -s build
+
 ```
 
 3. Access the application at http://localhost
@@ -79,6 +92,7 @@ You can access order information through:
 ### Database Connection
 
 The application uses the following environment variables for database connection:
+
 - DATABASE_URL
 - PGPORT
 - PGUSER
