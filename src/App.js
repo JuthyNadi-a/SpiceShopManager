@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ProductList from './components/ProductList';
@@ -12,6 +12,8 @@ import products from './data/products';
 
 function App() {
   const [cart, setCart] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState(products);
   
   // Add item to cart
   const addToCart = (product, quantity = 1) => {
@@ -54,18 +56,38 @@ function App() {
     setCart([]);
   };
   
+  // Handle search
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+  
+  // Filter products based on search term
+  useEffect(() => {
+    if (searchTerm.trim() === '') {
+      setFilteredProducts(products);
+    } else {
+      const searchTermLower = searchTerm.toLowerCase();
+      const filtered = products.filter(product => 
+        product.name.toLowerCase().includes(searchTermLower) || 
+        product.category.toLowerCase().includes(searchTermLower) || 
+        product.description.toLowerCase().includes(searchTermLower)
+      );
+      setFilteredProducts(filtered);
+    }
+  }, [searchTerm]);
+  
   // Calculate total items in cart
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   
   return (
     <Router>
       <div className="d-flex flex-column min-vh-100">
-        <Header totalItems={totalItems} />
+        <Header totalItems={totalItems} onSearch={handleSearch} searchTerm={searchTerm} />
         <main className="container py-4 flex-grow-1">
           <Routes>
             <Route 
               path="/" 
-              element={<ProductList products={products} addToCart={addToCart} />} 
+              element={<ProductList products={filteredProducts} addToCart={addToCart} searchTerm={searchTerm} />} 
             />
             <Route 
               path="/product/:id" 

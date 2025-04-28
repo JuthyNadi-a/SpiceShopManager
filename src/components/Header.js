@@ -1,7 +1,29 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
-const Header = ({ totalItems }) => {
+const Header = ({ totalItems, onSearch, searchTerm }) => {
+  const [searchInput, setSearchInput] = useState(searchTerm || '');
+  const navigate = useNavigate();
+  
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    onSearch(searchInput);
+    
+    // If user is not on the home page, navigate there to see results
+    navigate('/');
+  };
+  
+  const handleSearchInputChange = (e) => {
+    setSearchInput(e.target.value);
+    // For real-time search updates
+    onSearch(e.target.value);
+  };
+  
+  const clearSearch = () => {
+    setSearchInput('');
+    onSearch('');
+  };
+  
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-light bg-white">
@@ -43,6 +65,14 @@ const Header = ({ totalItems }) => {
                   )}
                 </NavLink>
               </li>
+              <li className="nav-item ms-3">
+                <NavLink 
+                  className={({isActive}) => isActive ? "nav-link active" : "nav-link"}
+                  to="/admin"
+                >
+                  Admin
+                </NavLink>
+              </li>
             </ul>
           </div>
         </div>
@@ -56,16 +86,29 @@ const Header = ({ totalItems }) => {
               <p className="lead">Discover exotic flavors from around the world</p>
             </div>
             <div className="col-md-6">
-              <div className="input-group">
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder="Search for spices..." 
-                />
-                <button className="btn btn-primary">
-                  <i className="fas fa-search"></i>
-                </button>
-              </div>
+              <form onSubmit={handleSearchSubmit}>
+                <div className="input-group">
+                  <input 
+                    type="text" 
+                    className="form-control" 
+                    placeholder="Search for spices..." 
+                    value={searchInput}
+                    onChange={handleSearchInputChange}
+                  />
+                  {searchInput && (
+                    <button 
+                      type="button" 
+                      className="btn btn-outline-secondary" 
+                      onClick={clearSearch}
+                    >
+                      <i className="fas fa-times"></i>
+                    </button>
+                  )}
+                  <button type="submit" className="btn btn-primary">
+                    <i className="fas fa-search"></i>
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
